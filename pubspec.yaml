@@ -1,0 +1,82 @@
+name: candy_puzzle
+description: "Candy puzzle IOS game"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  hive_ce: ^2.15.1
+  hive_ce_flutter: ^2.3.3
+  flutter_svg: ^2.2.3
+  riverpod: ^3.0.3
+  flutter_riverpod: ^3.0.3
+  go_router: ^17.0.0
+  device_info_plus: ^12.3.0
+  path_provider: ^2.1.5
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_gen_runner: ^5.12.0
+  build_runner: ^2.7.1
+  hive_ce_generator: ^1.9.3
+  freezed: ^3.2.3
+  json_serializable: ^6.11.2
+  riverpod_generator: ^3.0.3
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/puzzles/1/
+    - assets/puzzles/2/
+    - assets/puzzles/3/
+    - assets/puzzles/4/
+    - assets/puzzles/5/
+    - assets/puzzles/6/
+    - assets/puzzles/tips/
+    - assets/svgs/
+
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Fredoka-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Fredoka-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Fredoka-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Fredoka-Bold.ttf
+          weight: 700
