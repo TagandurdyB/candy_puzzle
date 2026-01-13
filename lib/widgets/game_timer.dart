@@ -17,54 +17,20 @@ class GameTimer extends ConsumerStatefulWidget {
 }
 
 class GameTimerState extends ConsumerState<GameTimer> {
-  Timer? timer;
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(puzzleDurationProvider.notifier).setDuration(widget.duration);
-      startTimer();
+      ref.read(puzzleDurationProvider.notifier).startTimer();
     });
 
     super.initState();
   }
 
-  void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (!mounted) return;
-      ref.read(puzzleDurationProvider.notifier).decrimentDuration();
-      if (ref.read(puzzleDurationProvider) <= Duration.zero) {
-        timer.cancel();
-        finish();
-      }
-    });
-  }
-
-  void reset() {
-    try {
-      timer!.cancel();
-    } catch (_) {}
-
-    ref.read(puzzleDurationProvider.notifier).setDuration(widget.duration);
-    startTimer();
-  }
-
-  void pause() {
-    if (timer?.isActive ?? false) {
-      timer!.cancel();
-    }
-  }
-
-  void finish() {
-    PopUpService()
-        .show(FinishMenu(isWin: false), barrierDismissible: false)
-        .then((val) {});
-  }
-
   @override
   void dispose() {
-    if (timer?.isActive ?? false) {
-      timer!.cancel();
+    if (ref.read(puzzleDurationProvider.notifier).timer?.isActive ?? false) {
+      ref.read(puzzleDurationProvider.notifier).pause();
     }
     super.dispose();
   }
@@ -96,7 +62,7 @@ class GameTimerState extends ConsumerState<GameTimer> {
         Padding(
           padding: const EdgeInsets.only(left: 18),
           child: context.t.mediumText(
-            ref.watch(puzzleDurationProvider).clockFormat(),
+            ref.watch(puzzleDurationProvider).value.clockFormat(),
             size: 23,
           ),
         ),

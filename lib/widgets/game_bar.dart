@@ -17,8 +17,6 @@ class GameBar extends ConsumerStatefulWidget {
 }
 
 class _GameTimerState extends ConsumerState<GameBar> {
-  final GlobalKey<GameTimerState> clockKey = GlobalKey<GameTimerState>();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,10 +36,12 @@ class _GameTimerState extends ConsumerState<GameBar> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      clockKey.currentState?.pause();
+                      ref.read(puzzleDurationProvider.notifier).pause();
                       PopUpService().show(AskMenu()).then((val) {
                         if (mounted) {
-                          clockKey.currentState?.startTimer();
+                          ref
+                              .read(puzzleDurationProvider.notifier)
+                              .startTimer();
                         }
                       });
                     },
@@ -49,19 +49,22 @@ class _GameTimerState extends ConsumerState<GameBar> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: GameTimer(key: clockKey, duration: puzzle.duration),
+                    child: GameTimer(duration: puzzle.duration),
                   ),
                   GestureDetector(
                     onTap: () {
-                      clockKey.currentState?.pause();
+                      ref.read(puzzleDurationProvider.notifier).pause();
+
                       PopUpService().show(PauseMenu()).then((val) {
                         // PopUpService().show(FinishMenu(isWin: false)).then((val) {
                         if (mounted) {
                           if (val is List) {
-                            clockKey.currentState?.reset();
+                            ref.read(puzzleDurationProvider.notifier).reset();
                             ref.refresh(puzzleControllerProvider.notifier);
                           } else {
-                            clockKey.currentState?.startTimer();
+                            ref
+                                .read(puzzleDurationProvider.notifier)
+                                .startTimer();
                           }
                         }
                       });

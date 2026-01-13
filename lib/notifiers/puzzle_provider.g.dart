@@ -13,7 +13,7 @@ part of 'puzzle_provider.dart';
 const puzzleDurationProvider = PuzzleDurationProvider._();
 
 final class PuzzleDurationProvider
-    extends $NotifierProvider<PuzzleDuration, Duration> {
+    extends $NotifierProvider<PuzzleDuration, MapEntry<Duration, Duration>> {
   const PuzzleDurationProvider._()
     : super(
         from: null,
@@ -33,28 +33,34 @@ final class PuzzleDurationProvider
   PuzzleDuration create() => PuzzleDuration();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Duration value) {
+  Override overrideWithValue(MapEntry<Duration, Duration> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<Duration>(value),
+      providerOverride: $SyncValueProvider<MapEntry<Duration, Duration>>(value),
     );
   }
 }
 
-String _$puzzleDurationHash() => r'2623fbfdf75db2ba3557b7da466755ee3a90545c';
+String _$puzzleDurationHash() => r'62d88adab81d9e9b5a440b21056a7dfbffe6f59f';
 
-abstract class _$PuzzleDuration extends $Notifier<Duration> {
-  Duration build();
+abstract class _$PuzzleDuration
+    extends $Notifier<MapEntry<Duration, Duration>> {
+  MapEntry<Duration, Duration> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<Duration, Duration>;
+    final ref =
+        this.ref
+            as $Ref<MapEntry<Duration, Duration>, MapEntry<Duration, Duration>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<Duration, Duration>,
-              Duration,
+              AnyNotifier<
+                MapEntry<Duration, Duration>,
+                MapEntry<Duration, Duration>
+              >,
+              MapEntry<Duration, Duration>,
               Object?,
               Object?
             >;
@@ -94,7 +100,7 @@ final class PuzzleDataValuesProvider
   }
 }
 
-String _$puzzleDataValuesHash() => r'b240fe5f94dbc0ffedb960ad651f78e94d522366';
+String _$puzzleDataValuesHash() => r'0230f6f3796603c3b7c1c7743d9e1ce88eccdfc8';
 
 abstract class _$PuzzleDataValues extends $Notifier<PuzzleDataState> {
   PuzzleDataState build();
@@ -139,7 +145,7 @@ final class PuzzleControllerProvider
   PuzzleController create() => PuzzleController();
 }
 
-String _$puzzleControllerHash() => r'461b0ce8c53dc3bb7872e2eac1524c91bb664a20';
+String _$puzzleControllerHash() => r'dda2a85e9f99d8fa4bd91b9e19dbbc59f78606ad';
 
 abstract class _$PuzzleController extends $AsyncNotifier<PuzzleModel?> {
   FutureOr<PuzzleModel?> build();

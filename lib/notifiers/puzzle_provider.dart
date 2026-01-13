@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:math';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,16 +28,49 @@ class PuzzleDataState {
 @Riverpod(keepAlive: true)
 class PuzzleDuration extends _$PuzzleDuration {
   @override
-  Duration build() {
-    return Duration.zero;
+  MapEntry<Duration, Duration> build() {
+    return MapEntry(Duration.zero, Duration.zero);
   }
 
   void setDuration(Duration duration) {
-    state = duration;
+    state = MapEntry(duration, duration);
   }
 
   void decrimentDuration() {
-    state = state - Duration(seconds: 1);
+    state = MapEntry(state.key, state.value - Duration(seconds: 1));
+  }
+
+  Timer? timer;
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      decrimentDuration();
+      if (state.value <= Duration.zero) {
+        timer.cancel();
+        finish();
+      }
+    });
+  }
+
+  void reset() {
+    try {
+      timer!.cancel();
+    } catch (_) {}
+
+    ref.read(puzzleDurationProvider.notifier).setDuration(state.key);
+    startTimer();
+  }
+
+  void pause() {
+    if (timer?.isActive ?? false) {
+      timer!.cancel();
+    }
+  }
+
+  void finish() {
+    PopUpService()
+        .show(FinishMenu(isWin: false), barrierDismissible: false)
+        .then((val) {});
   }
 }
 
@@ -126,7 +160,11 @@ class PuzzleController extends _$PuzzleController {
 
       if (corrcetCount == pieces.length) {
         final data = ref.read(puzzleDataValuesProvider);
-        final duration = ref.read(puzzleDurationProvider);
+        final duration = ref.read(puzzleDurationProvider).value;
+        ref.read(puzzleDurationProvider.notifier).pause();
+        if (data.level == Boxes().openedLvl) {
+          Boxes().putOpenedLvl(data.level + 1);
+        }
         Boxes().putBestTime(data.level, duration);
         PopUpService()
             .show(FinishMenu(isWin: true), barrierDismissible: false)

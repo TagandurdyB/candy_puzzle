@@ -17,10 +17,6 @@ class FinishMenu extends ConsumerStatefulWidget {
 class _FinishMenuState extends ConsumerState<FinishMenu> {
   @override
   void initState() {
-    if (widget.isWin) {
-      final newLevel = Boxes().openedLvl + 1;
-      Boxes().putOpenedLvl(newLevel);
-    }
     super.initState();
   }
 
@@ -79,7 +75,7 @@ class _FinishMenuState extends ConsumerState<FinishMenu> {
                         padding: const EdgeInsets.only(bottom: 16),
                         child: buildTime(
                           'Your time',
-                          ref.read(puzzleDurationProvider),
+                          ref.read(puzzleDurationProvider).value,
                         ),
                       ),
                     if (Boxes().bestTime(level) != null)
@@ -120,7 +116,7 @@ class _FinishMenuState extends ConsumerState<FinishMenu> {
                                   Go.pop();
                                   Go.toReplace(
                                     Go.game,
-                                    argument: {'level': Boxes().openedLvl},
+                                    argument: {'level': level + 1},
                                   );
                                 },
                                 child: SvgPicture.asset(
